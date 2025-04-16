@@ -16,6 +16,185 @@
     "ReturnTypes": []
   },
   {
+    "ContainingType": "milestone2.Controllers.BookController",
+    "Method": "ReserveBook",
+    "RelativePath": "api/Book/reserve/{id}",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "milestone2.Controllers.BookController",
+    "Method": "SearchBooks",
+    "RelativePath": "api/Book/search",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "query",
+        "Type": "System.String",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "milestone2.Controllers.BookController",
+    "Method": "JoinWaitlist",
+    "RelativePath": "api/Book/waitlist/{id}",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Int32",
+        "IsRequired": true
+      },
+      {
+        "Name": "userEmail",
+        "Type": "System.String",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "milestone2.Controllers.InventoryController",
+    "Method": "AddBook",
+    "RelativePath": "api/Inventory/add-book",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "book",
+        "Type": "milestone2.Models.Book",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "milestone2.Controllers.InventoryController",
+    "Method": "MarkDamaged",
+    "RelativePath": "api/Inventory/mark-damaged/{id}",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "milestone2.Controllers.InventoryController",
+    "Method": "MostRequested",
+    "RelativePath": "api/Inventory/top-requests",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "milestone2.Controllers.LoanController",
+    "Method": "GetLoans",
+    "RelativePath": "api/Loan/patron/{email}",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "email",
+        "Type": "System.String",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "milestone2.Controllers.LoanController",
+    "Method": "RenewLoan",
+    "RelativePath": "api/Loan/renew/{id}",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "milestone2.Controllers.LoanController",
+    "Method": "ReturnBook",
+    "RelativePath": "api/Loan/return/{id}",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "milestone2.Controllers.NotificationController",
+    "Method": "DueReminder",
+    "RelativePath": "api/Notification/due-reminder",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "userEmail",
+        "Type": "System.String",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "milestone2.Controllers.NotificationController",
+    "Method": "ApplyLateFees",
+    "RelativePath": "api/Notification/late-fees",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "milestone2.Controllers.NotificationController",
+    "Method": "OverdueReport",
+    "RelativePath": "api/Notification/overdue-report",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
     "ContainingType": "milestone2.Controllers.NotificationController",
     "Method": "Send",
     "RelativePath": "api/Notification/send",

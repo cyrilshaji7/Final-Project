@@ -8,6 +8,13 @@ namespace milestone2.Data
         public AppDbContext(DbContextOptions<AppDbContext> options) : base(options) { }
 
         public DbSet<Notification> Notifications => Set<Notification>();
+        public DbSet<Book> Books => Set<Book>();
+        public DbSet<WaitlistEntry> WaitlistEntries => Set<WaitlistEntry>();
+        public DbSet<Reservation> Reservations => Set<Reservation>();
+
+        public DbSet<Loan> Loans => Set<Loan>();
+        public DbSet<User> Users => Set<User>();
+
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -18,4 +25,7 @@ namespace milestone2.Data
             base.OnModelCreating(modelBuilder);
         }
     }
+
+
+
 }

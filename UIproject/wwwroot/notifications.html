@@ -1,0 +1,41 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title>Send Notification</title>
+    <script>
+    const API = "http://localhost:5062";
+
+    async function sendNotif() {
+      const userId = document.getElementById("uid").value;
+      const msg = document.getElementById("msg").value;
+
+      const res = await fetch(`${API}/api/notification/send`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${localStorage.getItem("token")}`
+        },
+        body: JSON.stringify({ userId, message: msg })
+      });
+
+      alert("Sent");
+    }
+
+    async function getOverdues() {
+      const res = await fetch(`${API}/api/notification/overdue-report`);
+      const data = await res.json();
+      document.getElementById("report").innerText = JSON.stringify(data, null, 2);
+    }
+    </script>
+</head>
+<body>
+    <h2>Send Manual Notification</h2>
+    <input id="uid" type="number" placeholder="User ID" />
+    <input id="msg" type="text" placeholder="Message" />
+    <button onclick="sendNotif()">Send</button>
+
+    <h2>📄 Overdue Report</h2>
+    <button onclick="getOverdues()">Load Report</button>
+    <pre id="report"></pre>
+</body>
+</html>

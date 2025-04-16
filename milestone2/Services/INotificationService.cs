@@ -8,4 +8,5 @@ namespace milestone2.Services
         Task<List<Notification>> GetUserNotifications(int userId);
     }
 
+
 }

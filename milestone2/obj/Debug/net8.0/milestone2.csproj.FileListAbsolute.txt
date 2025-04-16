@@ -178,3 +178,4 @@ C:\Users\cyril\Desktop\milestone2\milestone2\obj\Debug\net8.0\refint\milestone2.
 C:\Users\cyril\Desktop\milestone2\milestone2\obj\Debug\net8.0\milestone2.pdb
 C:\Users\cyril\Desktop\milestone2\milestone2\obj\Debug\net8.0\milestone2.genruntimeconfig.cache
 C:\Users\cyril\Desktop\milestone2\milestone2\obj\Debug\net8.0\ref\milestone2.dll
+C:\Users\cyril\Desktop\milestone2\milestone2\obj\Debug\net8.0\milestone2.sourcelink.json

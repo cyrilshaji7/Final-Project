@@ -1,0 +1,41 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title>Inventory Tools</title>
+    <script>
+    const API = "http://localhost:5062";
+
+    async function addBook() {
+      const title = prompt("Title");
+      const author = prompt("Author");
+      const genre = prompt("Genre");
+
+      await fetch(`${API}/api/inventory/add-book`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ title, author, genre })
+      });
+
+      alert("Book added.");
+    }
+
+    async function getPopular() {
+      const res = await fetch(`${API}/api/inventory/top-requests`);
+      const books = await res.json();
+      alert("Most requested:\n" + books.map(b => b.title).join("\n"));
+    }
+
+    async function markDamaged() {
+      const id = prompt("Book ID to mark as damaged:");
+      await fetch(`${API}/api/inventory/mark-damaged/${id}`, { method: "POST" });
+      alert("Book marked damaged.");
+    }
+    </script>
+</head>
+<body>
+    <h2>Inventory Tools</h2>
+    <button onclick="addBook()">➕ Add Book</button>
+    <button onclick="getPopular()">📊 Most Requested</button>
+    <button onclick="markDamaged()">⚠️ Mark Damaged</button>
+</body>
+</html>

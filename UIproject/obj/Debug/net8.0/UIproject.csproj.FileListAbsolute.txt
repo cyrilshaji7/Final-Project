@@ -32,3 +32,4 @@ C:\Users\cyril\Desktop\milestone2\UIproject\obj\Debug\net8.0\refint\UIproject.dl
 C:\Users\cyril\Desktop\milestone2\UIproject\obj\Debug\net8.0\UIproject.pdb
 C:\Users\cyril\Desktop\milestone2\UIproject\obj\Debug\net8.0\UIproject.genruntimeconfig.cache
 C:\Users\cyril\Desktop\milestone2\UIproject\obj\Debug\net8.0\ref\UIproject.dll
+C:\Users\cyril\Desktop\milestone2\UIproject\obj\Debug\net8.0\UIproject.sourcelink.json

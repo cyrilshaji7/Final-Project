@@ -13,19 +13,15 @@
             max-width: 500px;
             margin-top: 60px;
         }
-
-        h1, h2 {
-            margin-top: 20px;
-        }
     </style>
 </head>
 <body>
     <div class="container">
-        <h1 class="text-center">📖 Patron Portal</h1>
+        <h1 class="text-center">📖 MLMS Patron Login</h1>
         <p class="text-center"><a href="staff.html">🔁 Switch to Staff Login</a></p>
 
         <form id="loginForm" class="mb-4">
-            <h2>Login</h2>
+            <h3>🔐 Login</h3>
             <div class="mb-3">
                 <input type="text" class="form-control" id="username" placeholder="Username" required />
             </div>
@@ -35,16 +31,32 @@
             <button type="submit" class="btn btn-primary w-100">Login</button>
         </form>
 
-        <div>
-            <h2>Your Notifications</h2>
-            <button id="loadBtn" class="btn btn-outline-secondary mb-3 w-100">Load My Notifications</button>
-            <ul id="notificationsList" class="list-group"></ul>
-        </div>
-
-        <p id="output" class="text-center mt-3"></p>
+        <p id="loginOutput" class="text-danger text-center"></p>
     </div>
 
-    <script src="js/auth.js"></script>
-    <script src="js/patron.js"></script>
+    <script>
+        const API = "http://localhost:5062";
+
+        document.getElementById("loginForm").addEventListener("submit", async (e) => {
+            e.preventDefault();
+            const username = document.getElementById("username").value;
+            const password = document.getElementById("password").value;
+
+            const res = await fetch(`${API}/api/auth/login`, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ username, password })
+            });
+
+            if (res.ok) {
+                const data = await res.json();
+                localStorage.setItem("token", data.token);
+                localStorage.setItem("email", username);
+                window.location.href = "index.html"; // ✅ Redirect after login
+            } else {
+                document.getElementById("loginOutput").textContent = "Invalid credentials.";
+            }
+        });
+    </script>
 </body>
 </html>

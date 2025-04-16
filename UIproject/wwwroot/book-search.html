@@ -1,0 +1,48 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title>Search Books</title>
+    <script>
+        const API = "http://localhost:5062";
+
+        async function search() {
+            const query = document.getElementById("query").value;
+            const res = await fetch(`${API}/api/book/search?query=${query}`);
+            const books = await res.json();
+
+            const results = document.getElementById("results");
+            results.innerHTML = "";
+            books.forEach(b => {
+                results.innerHTML += `
+              <div>
+                <strong>${b.title}</strong> by ${b.author} [${b.genre}] - ${b.isAvailable ? "Available" : "Not Available"}<br>
+                <button onclick="reserve(${b.id})">Reserve</button>
+                <button onclick="waitlist(${b.id})">Join Waitlist</button>
+                <hr>
+              </div>`;
+            });
+        }
+
+        async function reserve(bookId) {
+            const res = await fetch(`${API}/api/book/reserve/${bookId}`, { method: "POST" });
+            alert(await res.text());
+        }
+
+        async function waitlist(bookId) {
+            const email = prompt("Enter your email");
+            const res = await fetch(`${API}/api/book/waitlist/${bookId}`, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(email)
+            });
+            alert(await res.text());
+        }
+    </script>
+</head>
+<body>
+    <h2>Search Books</h2>
+    <input id="query" placeholder="title, author or genre" />
+    <button onclick="search()">Search</button>
+    <div id="results"></div>
+</body>
+</html>

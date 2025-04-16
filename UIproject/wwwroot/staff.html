@@ -41,7 +41,8 @@
             const pass = document.getElementById("password").value;
             const success = await login(user, pass);
             if (success) {
-                window.location.href = "staff-send.html";
+                // ✅ Redirect to index.html
+                window.location.href = "index.html";
             } else {
                 document.getElementById("output").innerText = "❌ Login failed";
             }

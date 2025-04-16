@@ -1,0 +1,292 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>MLMS Home</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: #f8f9fa;
+        }
+
+        .book-card {
+            margin-bottom: 1rem;
+        }
+
+        .section-title {
+            margin-top: 2rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="container mt-4">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h1>📚 Welcome to MLMS</h1>
+            <div>
+                <a href="patron.html" class="btn btn-primary me-2">🔐 Patron Login</a>
+                <button class="btn btn-danger" onclick="logout()">🚪 Logout</button>
+            </div>
+        </div>
+
+        <div class="row">
+            <!-- LEFT PANE -->
+            <div class="col-md-4">
+                <h4 class="section-title">🔔 Notifications</h4>
+                <button class="btn btn-outline-secondary mb-2 w-100" onclick="loadNotifications()">Load My Notifications</button>
+                <ul id="notificationsList" class="list-group mb-4"></ul>
+
+                <h4 class="section-title">📘 My Loans</h4>
+                <button class="btn btn-outline-info mb-2 w-100" onclick="loadLoans()">Refresh Loans</button>
+                <ul id="loanList" class="list-group mb-4"></ul>
+
+                <h4 class="section-title">🔍 Search Books</h4>
+                <div class="input-group mb-3">
+                    <input type="text" id="searchQuery" class="form-control" placeholder="Search by title, author or genre" />
+                    <button class="btn btn-outline-primary" onclick="searchBooks()">Search</button>
+                </div>
+                <div id="searchResults"></div>
+
+                <h4 class="section-title">📄 Overdue Report</h4>
+                <button class="btn btn-warning mb-2 w-100" onclick="getOverdues()">Get Overdues</button>
+                <pre id="overdueReport" class="bg-light p-3"></pre>
+
+                <!-- Admin Tools -->
+                <div id="adminTools" style="display: none;">
+                    <h4 class="section-title">➕ Add Book</h4>
+                    <form id="addBookForm">
+                        <input type="text" class="form-control mb-2" id="title" placeholder="Title" required />
+                        <input type="text" class="form-control mb-2" id="author" placeholder="Author" required />
+                        <input type="text" class="form-control mb-2" id="genre" placeholder="Genre" required />
+                        <button class="btn btn-success w-100" type="submit">Add Book</button>
+                    </form>
+
+                    <h4 class="section-title mt-4">📨 Send Notification</h4>
+                    <form id="sendNotificationForm">
+                        <input type="number" class="form-control mb-2" id="notifUserId" placeholder="User ID" required />
+                        <textarea class="form-control mb-2" id="notifMessage" placeholder="Message" required></textarea>
+                        <button class="btn btn-primary w-100" type="submit">Send</button>
+                    </form>
+                </div>
+            </div>
+
+            <!-- RIGHT PANE -->
+            <div class="col-md-8">
+                <h3 class="section-title">All Books</h3>
+                <div id="books" class="row row-cols-1 row-cols-md-2 g-4"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const API = "http://localhost:5062";
+        const email = localStorage.getItem("email");
+        const token = localStorage.getItem("token");
+        const isAdmin = email === "admin";
+
+        function logout() {
+            localStorage.clear();
+            window.location.href = "patron.html";
+        }
+
+        async function loadBooks() {
+            const res = await fetch(`${API}/api/book/search?query=`);
+            const books = await res.json();
+            const container = document.getElementById("books");
+            container.innerHTML = "";
+
+            books.forEach(book => {
+                container.innerHTML += `
+                    <div class="col">
+                        <div class="card book-card h-100 shadow-sm">
+                            <div class="card-body">
+                                <h5 class="card-title">${book.title}</h5>
+                                <h6 class="card-subtitle text-muted">${book.author}</h6>
+                                <p class="card-text">
+                                    Genre: ${book.genre}<br>
+                                    Status: ${book.isAvailable ? "<span class='text-success'>Available</span>" : "<span class='text-danger'>Unavailable</span>"}
+                                </p>
+                                ${book.isAvailable
+                        ? `<button class='btn btn-sm btn-primary' onclick='reserve(${book.id}, "${book.title}", this)'>Reserve</button>`
+                        : `<button class='btn btn-sm btn-outline-secondary' onclick='waitlist(${book.id}, this)'>Join Waitlist</button>`}
+                            </div>
+                        </div>
+                    </div>`;
+            });
+        }
+
+        async function loadNotifications() {
+            const res = await fetch(`${API}/api/notification/user/1`);
+            const list = await res.json();
+            const ul = document.getElementById("notificationsList");
+            ul.innerHTML = "";
+            list.forEach(n => {
+                ul.innerHTML += `<li class="list-group-item">${n.message} <small class="text-muted">(${new Date(n.sentAt).toLocaleString()})</small></li>`;
+            });
+        }
+
+        async function loadLoans() {
+            const ul = document.getElementById("loanList");
+            ul.innerHTML = "";
+
+            try {
+                const res = await fetch(`${API}/api/loan/patron/${email}`);
+                const loans = await res.json();
+                loans.forEach(l => {
+                    ul.innerHTML += `<li class="list-group-item">
+                        Book ID: ${l.bookId} | Due: ${new Date(l.dueDate).toDateString()}
+                    </li>`;
+                });
+            } catch (e) {
+                console.warn("Couldn't fetch backend loans.");
+            }
+
+            const manualLoans = JSON.parse(localStorage.getItem("manualLoans") || "[]");
+            manualLoans.forEach(l => {
+                ul.innerHTML += `<li class="list-group-item text-muted">
+                    (Manual) Book ID: ${l.bookId} | Due: ${new Date(l.dueDate).toDateString()}
+                </li>`;
+            });
+        }
+
+        async function searchBooks() {
+            const q = document.getElementById("searchQuery").value;
+            const res = await fetch(`${API}/api/book/search?query=${q}`);
+            const books = await res.json();
+            const container = document.getElementById("searchResults");
+            container.innerHTML = "";
+            books.forEach(b => {
+                container.innerHTML += `
+                    <div class="card mb-2">
+                        <div class="card-body">
+                            <strong>${b.title}</strong> by ${b.author} [${b.genre}]<br>
+                            Status: ${b.isAvailable ? "<span class='text-success'>Available</span>" : "<span class='text-danger'>Unavailable</span>"}<br>
+                            ${b.isAvailable
+                        ? `<button class='btn btn-sm btn-primary mt-2' onclick='reserve(${b.id}, "${b.title}", this)'>Reserve</button>`
+                        : `<button class='btn btn-sm btn-outline-secondary mt-2' onclick='waitlist(${b.id}, this)'>Join Waitlist</button>`}
+                        </div>
+                    </div>`;
+            });
+        }
+
+        async function reserve(bookId, bookTitle, btn) {
+            if (!email) {
+                alert("You must be logged in.");
+                return;
+            }
+
+            try {
+                const res = await fetch(`${API}/api/book/reserve/${bookId}`, {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ email })
+                });
+
+                const msg = await res.text();
+                if (res.ok) {
+                    alert(msg);
+                }
+            } catch (err) {
+                console.warn("Reserve error:", err);
+            }
+
+            const loans = JSON.parse(localStorage.getItem("manualLoans") || "[]");
+            loans.push({
+                bookId,
+                bookTitle,
+                dueDate: new Date(Date.now() + 14 * 24 * 60 * 60 * 1000)
+            });
+            localStorage.setItem("manualLoans", JSON.stringify(loans));
+
+            if (btn) {
+                btn.textContent = "✅ Reserved";
+                btn.classList.remove("btn-primary");
+                btn.classList.add("btn-success");
+                btn.disabled = true;
+            }
+
+            await loadLoans();
+        }
+
+        async function waitlist(id, btn) {
+            const res = await fetch(`${API}/api/book/waitlist/${id}`, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(email)
+            });
+            const result = await res.text();
+            alert(result);
+
+            if (btn) {
+                btn.textContent = "✅ Waitlist Joined";
+                btn.classList.remove("btn-outline-secondary");
+                btn.classList.add("btn-success");
+                btn.disabled = true;
+            }
+        }
+
+        async function getOverdues() {
+            const res = await fetch(`${API}/api/notification/overdue-report`);
+            const data = await res.json();
+            const pre = document.getElementById("overdueReport");
+
+            if (!Array.isArray(data) || data.length === 0) {
+                pre.innerText = "✅ No overdue loans found.";
+                return;
+            }
+
+            let output = "";
+            data.forEach(l => {
+                output += `📚 Book ID: ${l.bookId}\n`;
+                output += `👤 Patron: ${l.patronEmail} (User ID: ${l.userId})\n`;
+                output += `📅 Borrowed At: ${new Date(l.borrowedAt).toLocaleString()}\n`;
+                output += `⏰ Due Date: ${new Date(l.dueDate).toLocaleDateString()}\n`;
+                output += `🔁 Returned: ${l.isReturned ? "Yes" : "No"}\n`;
+                output += `--------------------------\n`;
+            });
+
+            pre.innerText = output;
+        }
+
+        document.getElementById("addBookForm")?.addEventListener("submit", async (e) => {
+            e.preventDefault();
+            const title = document.getElementById("title").value;
+            const author = document.getElementById("author").value;
+            const genre = document.getElementById("genre").value;
+
+            const res = await fetch(`${API}/api/book/add`, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ title, author, genre })
+            });
+
+            const msg = await res.text();
+            alert(msg);
+            loadBooks();
+        });
+
+        document.getElementById("sendNotificationForm")?.addEventListener("submit", async (e) => {
+            e.preventDefault();
+            const userId = parseInt(document.getElementById("notifUserId").value);
+            const message = document.getElementById("notifMessage").value;
+
+            const res = await fetch(`${API}/api/notification/send`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": `Bearer ${token}`
+                },
+                body: JSON.stringify({ userId, message })
+            });
+
+            const msg = await res.text();
+            alert(msg);
+        });
+
+        if (isAdmin && token) {
+            document.getElementById("adminTools").style.display = "block";
+        }
+
+        loadBooks();
+    </script>
+</body>
+</html>

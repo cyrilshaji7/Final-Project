@@ -1,0 +1,42 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title>Your Loans</title>
+    <script>
+    const API = "http://localhost:5062";
+
+    async function loadLoans() {
+      const email = document.getElementById("email").value;
+      const res = await fetch(`${API}/api/loan/patron/${email}`);
+      const loans = await res.json();
+      const list = document.getElementById("loans");
+      list.innerHTML = "";
+
+      loans.forEach(l => {
+        list.innerHTML += `
+          <li>
+            Book ID: ${l.bookId} | Due: ${new Date(l.dueDate).toDateString()}
+            <button onclick="renew(${l.id})">Renew</button>
+            <button onclick="returnBook(${l.id})">Return</button>
+          </li>`;
+      });
+    }
+
+    async function renew(id) {
+      await fetch(`${API}/api/loan/renew/${id}`, { method: "POST" });
+      loadLoans();
+    }
+
+    async function returnBook(id) {
+      await fetch(`${API}/api/loan/return/${id}`, { method: "POST" });
+      loadLoans();
+    }
+    </script>
+</head>
+<body>
+    <h2>View Your Loans</h2>
+    <input id="email" placeholder="Enter your email" />
+    <button onclick="loadLoans()">Load Loans</button>
+    <ul id="loans"></ul>
+</body>
+</html>

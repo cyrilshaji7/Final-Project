@@ -2,7 +2,6 @@
 using milestone2.Models;
 using Microsoft.EntityFrameworkCore;
 
-
 namespace milestone2.Services
 {
     public class NotificationService : INotificationService
@@ -12,12 +11,28 @@ namespace milestone2.Services
 
         public async Task SendAsync(int userId, string message)
         {
-            var notification = new Notification { UserId = userId, Message = message };
+            var user = await _context.Users.FindAsync(userId);
+            if (user == null) throw new Exception("User not found");
+
+            var notification = new Notification
+            {
+                UserEmail = user.Email,
+                Message = message,
+                SentAt = DateTime.UtcNow
+            };
+
             _context.Notifications.Add(notification);
             await _context.SaveChangesAsync();
         }
 
-        public Task<List<Notification>> GetUserNotifications(int userId) =>
-            _context.Notifications.Where(n => n.UserId == userId).ToListAsync();
+        public async Task<List<Notification>> GetUserNotifications(int userId)
+        {
+            var user = await _context.Users.FindAsync(userId);
+            if (user == null) throw new Exception("User not found");
+
+            return await _context.Notifications
+                .Where(n => n.UserEmail == user.Email)
+                .ToListAsync();
+        }
     }
 }

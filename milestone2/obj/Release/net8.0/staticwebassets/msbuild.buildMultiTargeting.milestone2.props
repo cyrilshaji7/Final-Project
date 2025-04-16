@@ -1,0 +1,3 @@
+﻿<Project>
+  <Import Project="..\build\milestone2.props" />
+</Project>

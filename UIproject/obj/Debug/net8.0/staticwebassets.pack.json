@@ -5,6 +5,10 @@
       "PackagePath": "staticwebassets\\UIproject.qn7evb06vb.bundle.scp.css"
     },
     {
+      "Id": "C:\\Users\\cyril\\Desktop\\milestone2\\UIproject\\wwwroot\\book-search.html",
+      "PackagePath": "staticwebassets\\book-search.html"
+    },
+    {
       "Id": "C:\\Users\\cyril\\Desktop\\milestone2\\UIproject\\wwwroot\\css\\site.css",
       "PackagePath": "staticwebassets\\css\\site.css"
     },
@@ -15,6 +19,10 @@
     {
       "Id": "C:\\Users\\cyril\\Desktop\\milestone2\\UIproject\\wwwroot\\favicon.ico",
       "PackagePath": "staticwebassets\\favicon.ico"
+    },
+    {
+      "Id": "C:\\Users\\cyril\\Desktop\\milestone2\\UIproject\\wwwroot\\inventory.html",
+      "PackagePath": "staticwebassets\\inventory.html"
     },
     {
       "Id": "C:\\Users\\cyril\\Desktop\\milestone2\\UIproject\\wwwroot\\js\\auth.js",
@@ -259,6 +267,14 @@
     {
       "Id": "C:\\Users\\cyril\\Desktop\\milestone2\\UIproject\\wwwroot\\lib\\jquery\\dist\\jquery.min.map",
       "PackagePath": "staticwebassets\\lib\\jquery\\dist\\jquery.min.map"
+    },
+    {
+      "Id": "C:\\Users\\cyril\\Desktop\\milestone2\\UIproject\\wwwroot\\loan.html",
+      "PackagePath": "staticwebassets\\loan.html"
+    },
+    {
+      "Id": "C:\\Users\\cyril\\Desktop\\milestone2\\UIproject\\wwwroot\\notifications.html",
+      "PackagePath": "staticwebassets\\notifications.html"
     },
     {
       "Id": "C:\\Users\\cyril\\Desktop\\milestone2\\UIproject\\wwwroot\\patron.html",
