@@ -106,7 +106,7 @@ using (var scope = app.Services.CreateScope())
         );
 
         db.SaveChanges();
-        Console.WriteLine("✅ Seeded test users.");
+        Console.WriteLine("Seeded test users.");
     }
 }
 
@@ -115,7 +115,7 @@ using (var scope = app.Services.CreateScope())
 {
     var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
 
-    if (!db.Books.Any()) // Optional: Only seed if not already present
+    if (!db.Books.Any()) 
     {
         var books = new List<Book>
         {
@@ -148,11 +148,11 @@ using (var scope = app.Services.CreateScope())
 
         db.Books.AddRange(books);
         db.SaveChanges();
-        Console.WriteLine("📚 Seeded 20 real-world books into the database.");
+        Console.WriteLine("Seeded 20 real-world books into the database.");
     }
     else
     {
-        Console.WriteLine("✅ Books already exist. Skipping seed.");
+        Console.WriteLine("Books already exist. Skipping seed.");
     }
 }
 
@@ -169,7 +169,7 @@ using (var scope = app.Services.CreateScope())
 
         if (users.Count == 0 || books.Count < 10)
         {
-            Console.WriteLine("⚠️ Not enough users or books to seed loans.");
+            Console.WriteLine("Not enough users or books to seed loans.");
         }
         else
         {
