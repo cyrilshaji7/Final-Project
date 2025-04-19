@@ -21,32 +21,32 @@
 <body>
     <div class="container mt-4">
         <div class="d-flex justify-content-between align-items-center mb-4">
-            <h1>📚 Welcome to MLMS</h1>
+            <h1>📚 Welcome to Modern Library Management System</h1>
             <div>
-                <a href="patron.html" class="btn btn-primary me-2">🔐 Patron Login</a>
-                <button class="btn btn-danger" onclick="logout()">🚪 Logout</button>
+                <a href="patron.html" class="btn btn-primary me-2">Patron Login</a>
+                <button class="btn btn-danger" onclick="logout()">Logout</button>
             </div>
         </div>
 
         <div class="row">
             <!-- LEFT PANE -->
             <div class="col-md-4">
-                <h4 class="section-title">🔔 Notifications</h4>
+                <h4 class="section-title">Notifications</h4>
                 <button class="btn btn-outline-secondary mb-2 w-100" onclick="loadNotifications()">Load My Notifications</button>
                 <ul id="notificationsList" class="list-group mb-4"></ul>
 
-                <h4 class="section-title">📘 My Loans</h4>
+                <h4 class="section-title">My Loans</h4>
                 <button class="btn btn-outline-info mb-2 w-100" onclick="loadLoans()">Refresh Loans</button>
                 <ul id="loanList" class="list-group mb-4"></ul>
 
-                <h4 class="section-title">🔍 Search Books</h4>
+                <h4 class="section-title">Search Books</h4>
                 <div class="input-group mb-3">
                     <input type="text" id="searchQuery" class="form-control" placeholder="Search by title, author or genre" />
                     <button class="btn btn-outline-primary" onclick="searchBooks()">Search</button>
                 </div>
                 <div id="searchResults"></div>
 
-                <h4 class="section-title">📄 Overdue Report</h4>
+                <h4 class="section-title">Overdue Report</h4>
                 <button class="btn btn-warning mb-2 w-100" onclick="getOverdues()">Get Overdues</button>
                 <pre id="overdueReport" class="bg-light p-3"></pre>
 
@@ -60,7 +60,7 @@
                         <button class="btn btn-success w-100" type="submit">Add Book</button>
                     </form>
 
-                    <h4 class="section-title mt-4">📨 Send Notification</h4>
+                    <h4 class="section-title mt-4">Send Notification</h4>
                     <form id="sendNotificationForm">
                         <input type="number" class="form-control mb-2" id="notifUserId" placeholder="User ID" required />
                         <textarea class="form-control mb-2" id="notifMessage" placeholder="Message" required></textarea>
@@ -200,7 +200,7 @@
             localStorage.setItem("manualLoans", JSON.stringify(loans));
 
             if (btn) {
-                btn.textContent = "✅ Reserved";
+                btn.textContent = "Reserved";
                 btn.classList.remove("btn-primary");
                 btn.classList.add("btn-success");
                 btn.disabled = true;
@@ -219,7 +219,7 @@
             alert(result);
 
             if (btn) {
-                btn.textContent = "✅ Waitlist Joined";
+                btn.textContent = "Waitlist Joined";
                 btn.classList.remove("btn-outline-secondary");
                 btn.classList.add("btn-success");
                 btn.disabled = true;
@@ -232,17 +232,17 @@
             const pre = document.getElementById("overdueReport");
 
             if (!Array.isArray(data) || data.length === 0) {
-                pre.innerText = "✅ No overdue loans found.";
+                pre.innerText = "No overdue loans found.";
                 return;
             }
 
             let output = "";
             data.forEach(l => {
-                output += `📚 Book ID: ${l.bookId}\n`;
-                output += `👤 Patron: ${l.patronEmail} (User ID: ${l.userId})\n`;
-                output += `📅 Borrowed At: ${new Date(l.borrowedAt).toLocaleString()}\n`;
-                output += `⏰ Due Date: ${new Date(l.dueDate).toLocaleDateString()}\n`;
-                output += `🔁 Returned: ${l.isReturned ? "Yes" : "No"}\n`;
+                output += `Book ID: ${l.bookId}\n`;
+                output += `Patron: ${l.patronEmail} (User ID: ${l.userId})\n`;
+                output += `Borrowed At: ${new Date(l.borrowedAt).toLocaleString()}\n`;
+                output += `Due Date: ${new Date(l.dueDate).toLocaleDateString()}\n`;
+                output += `Returned: ${l.isReturned ? "Yes" : "No"}\n`;
                 output += `--------------------------\n`;
             });
 
