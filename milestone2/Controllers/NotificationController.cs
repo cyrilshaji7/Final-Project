@@ -70,7 +70,7 @@ namespace milestone2.Controllers
             return Ok(overdue);
         }
 
-        // ✅ Allow only users with Admin role to send notifications manually
+        // Allow only users with Admin role to send notifications manually
         [HttpPost("send")]
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Send([FromBody] NotificationDto dto)
