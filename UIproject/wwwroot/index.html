@@ -81,7 +81,9 @@
         const API = "http://localhost:5062";
         const email = localStorage.getItem("email");
         const token = localStorage.getItem("token");
-        const isAdmin = email === "admin";
+
+        // 🔧 Make sure admin check uses the correct email
+        const isAdmin = email === "admin@example.com";
 
         function logout() {
             localStorage.clear();
@@ -288,5 +290,6 @@
 
         loadBooks();
     </script>
+
 </body>
 </html>

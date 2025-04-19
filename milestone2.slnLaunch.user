@@ -9,8 +9,7 @@
       },
       {
         "Path": "UIproject\\UIproject.csproj",
-        "Action": "Start",
-        "DebugTarget": "http"
+        "Action": "Start"
       }
     ]
   }

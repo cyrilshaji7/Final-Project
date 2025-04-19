@@ -17,6 +17,22 @@
   },
   {
     "ContainingType": "milestone2.Controllers.BookController",
+    "Method": "AddBook",
+    "RelativePath": "api/Book/add",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "book",
+        "Type": "milestone2.Models.Book",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "milestone2.Controllers.BookController",
     "Method": "ReserveBook",
     "RelativePath": "api/Book/reserve/{id}",
     "HttpMethod": "POST",
@@ -26,6 +42,11 @@
       {
         "Name": "id",
         "Type": "System.Int32",
+        "IsRequired": true
+      },
+      {
+        "Name": "dto",
+        "Type": "milestone2.DTOs.ReserveDto",
         "IsRequired": true
       }
     ],
@@ -136,6 +157,27 @@
     "Parameters": [
       {
         "Name": "id",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "milestone2.Controllers.LoanController",
+    "Method": "ReserveBook",
+    "RelativePath": "api/Loan/reserve/{id}",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Int32",
+        "IsRequired": true
+      },
+      {
+        "Name": "userId",
         "Type": "System.Int32",
         "IsRequired": true
       }

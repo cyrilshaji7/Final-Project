@@ -4,6 +4,8 @@ using System.Text;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
 using milestone2.DTOs;
+using milestone2.Data;
+using milestone2.Models;
 
 namespace milestone2.Controllers
 {
@@ -12,32 +14,35 @@ namespace milestone2.Controllers
     public class AuthController : ControllerBase
     {
         private readonly IConfiguration _config;
+        private readonly AppDbContext _context;
 
-        public AuthController(IConfiguration config)
+        public AuthController(IConfiguration config, AppDbContext context)
         {
             _config = config;
+            _context = context;
         }
 
         [HttpPost("login")]
         public IActionResult Login([FromBody] LoginDto dto)
         {
-            // TODO: Replace with real user validation
-            if (dto.Username == "admin" && dto.Password == "password")
+            var user = _context.Users.FirstOrDefault(u => u.Email == dto.Username);
+
+            if (user == null || dto.Password != "password") 
             {
-                var token = GenerateJwtToken(dto.Username);
-                return Ok(new { token });
+                return Unauthorized();
             }
 
-            return Unauthorized();
+            var token = GenerateJwtToken(user.Email, user.Role);
+            return Ok(new { token });
         }
 
-        private string GenerateJwtToken(string username)
+        private string GenerateJwtToken(string email, string role)
         {
             var claims = new[]
             {
-            new Claim(ClaimTypes.Name, username),
-            new Claim(ClaimTypes.Role, "Admin") // or "User"
-        };
+                new Claim(ClaimTypes.Name, email),
+                new Claim(ClaimTypes.Role, role)
+            };
 
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["Jwt:Key"]));
             var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
@@ -51,5 +56,4 @@ namespace milestone2.Controllers
             return new JwtSecurityTokenHandler().WriteToken(token);
         }
     }
-
 }

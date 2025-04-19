@@ -2,6 +2,7 @@ wwwroot\book-search.html
 wwwroot\css\site.css
 wwwroot\css\styles.css
 wwwroot\favicon.ico
+wwwroot\index.html
 wwwroot\inventory.html
 wwwroot\js\auth.js
 wwwroot\js\patron.js

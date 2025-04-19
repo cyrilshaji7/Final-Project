@@ -68,7 +68,7 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
         };
     });
 
-// ✅ CORS: Allow frontend on localhost:5249
+// CORS: Allow frontend on localhost:5249
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowFrontend", policy =>
@@ -84,7 +84,7 @@ var app = builder.Build();
 // Middleware
 app.UseSwagger();
 app.UseSwaggerUI();
-app.UseCors("AllowFrontend"); // ✅ Applied policy here
+app.UseCors("AllowFrontend"); // Applied policy here
 
 app.UseAuthentication();
 app.UseAuthorization();
@@ -200,12 +200,12 @@ using (var scope = app.Services.CreateScope())
 
             db.Loans.AddRange(loans);
             db.SaveChanges();
-            Console.WriteLine("📦 Seeded 10 loans into the database.");
+            Console.WriteLine(" Seeded 10 loans into the database.");
         }
     }
     else
     {
-        Console.WriteLine("✅ Loans already exist. Skipping loan seed.");
+        Console.WriteLine(" Loans already exist. Skipping loan seed.");
     }
 }
 
